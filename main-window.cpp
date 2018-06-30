@@ -9,14 +9,17 @@
 #include <QTabWidget>
 #include <QPlainTextEdit>
 #include <QLabel>
-#include <QDebug>
+#include <QComboBox>
+
+#include "algorithms/algorithm-controller.h"
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+      algorithmController()
 {
     setFixedSize(1200L, 675L);
     setMinimumSize(1200L, 675L);
@@ -24,15 +27,49 @@ MainWindow::MainWindow(QWidget *parent)
     initializeActions();
     initializeMenus();
 
+    // Window
     centerWidget = new QWidget(this);
     layout = new QHBoxLayout(centerWidget);
+
+    // Algorithm Tab
     algorithmTabs = new QTabWidget(centerWidget);
+
+    // caeser Tab
+    caeserTab = new QWidget(algorithmTabs);
+    caeserTabLayout = new QHBoxLayout(caeserTab);
+    caeserLabel = new QLabel("Rotation Factor: ", caeserTab);
+    caeserComboBox = new QComboBox(caeserTab);
+    caeserComboBox->addItems({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                               "11", "12", "13", "14", "15", "16", "17", "18",
+                               "19", "20", "21", "22", "23", "24", "25", "26"});
+
+    caeserTabLayout->addWidget(caeserLabel);
+    caeserTabLayout->addWidget(caeserComboBox);
+
+    caeserTab->setLayout(caeserTabLayout);
+
+
+    // Caeser Tab
+    caeserTab = new QWidget(algorithmTabs);
+    vigenereTab = new QWidget(algorithmTabs);
+
+    // Add tabs
+    algorithmTabs->addTab(caeserTab, "Caeser");
+    algorithmTabs->addTab(vigenereTab, "Vigenère");
+
+
+
+
+    // Input/Output Tab
     inputWidget = new QWidget(centerWidget);
     inputLayout = new QVBoxLayout(inputWidget);
-    inputLabel = new QLabel("Input", inputWidget);
+    inputLabel = new QLabel("ASCII Plain Text", inputWidget);
     inputTextEdit = new QPlainTextEdit(inputWidget);
-    outputLabel = new QLabel("Output", inputWidget);
+    outputLabel = new QLabel("Ciphertext", inputWidget);
+
     outputTextEdit = new QPlainTextEdit(inputWidget);
+    outputTextEdit->setReadOnly(true);
+
     buttonWidget = new QWidget(inputWidget);
     buttonLayout = new QHBoxLayout(buttonWidget);
     decryptButton = new QPushButton("Decrypt Input", buttonWidget);
@@ -43,12 +80,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     buttonWidget->setLayout(buttonLayout);
 
-    rotTab = new QWidget(algorithmTabs);
-    caeserTab = new QWidget(algorithmTabs);
 
-    algorithmTabs->addTab(rotTab, "Rot");
-    algorithmTabs->addTab(caeserTab, "Caeser");
 
+
+    // Add to the vertical layout of the I/O Tab
     inputLayout->addWidget(inputLabel);
     inputLayout->addWidget(inputTextEdit);
     inputLayout->addWidget(outputLabel);
@@ -57,11 +92,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     inputWidget->setLayout(inputLayout);
 
+    // Add the two top level widgets to the main layout
     layout->addWidget(algorithmTabs);
     layout->addWidget(inputWidget);
 
+    // Add the layout to the center widget
     centerWidget->setLayout(layout);
-
     setCentralWidget(centerWidget);
 
     connect(encryptButton, &QAbstractButton::released, this, &MainWindow::encryptInput);
@@ -105,13 +141,9 @@ Description  :
 -----------------------------------------------------------------------------*/
 void MainWindow::encryptInput()
 {
-    if ((outputTextEdit == nullptr) || (inputTextEdit == nullptr))
-    {
-        qDebug() << "Null pointers abound!";
-        return;
-    }
-
-    outputTextEdit->setPlainText(inputTextEdit->toPlainText());
+    QString plainText = inputTextEdit->toPlainText();
+    QString cipherText = algorithmController.selectedAlgorithm().encrypt(plainText);
+    outputTextEdit->setPlainText(cipherText);
 }
 
 /*-----------------------------------------------------------------------------
@@ -120,5 +152,7 @@ Description  :
 -----------------------------------------------------------------------------*/
 void MainWindow::decryptInput()
 {
-    outputTextEdit->setPlainText(inputTextEdit->toPlainText());
+    QString cipherText = inputTextEdit->toPlainText();
+    QString plainText = algorithmController.selectedAlgorithm().decrypt(plainText);
+    outputTextEdit->setPlainText(plainText);
 }

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "algorithms/algorithm-controller.h"
+
 class QMenu;
 class QAction;
 class QPlainTextEdit;
@@ -10,6 +12,7 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QLabel;
 class QPushButton;
+class QComboBox;
 
 class MainWindow : public QMainWindow
 {
@@ -19,15 +22,16 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-protected:
-    void initializeActions();
-    void initializeMenus();
-
 private slots:
     void encryptInput();
     void decryptInput();
 
 private:
+    void initializeActions();
+    void initializeMenus();
+
+    AlgorithmController algorithmController;
+
     QMenu* fileMenu;
     QAction* saveAction;
     QAction* exitAction;
@@ -46,8 +50,12 @@ private:
     QPushButton* decryptButton;
     QPushButton* encryptButton;
 
-    QWidget* rotTab;
     QWidget* caeserTab;
+    QHBoxLayout* caeserTabLayout;
+    QLabel* caeserLabel;
+    QComboBox* caeserComboBox;
+
+    QWidget* vigenereTab;
 
 };
 
