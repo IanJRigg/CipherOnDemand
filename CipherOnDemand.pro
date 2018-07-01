@@ -29,10 +29,13 @@ SOURCES += \
         main.cpp \
         main-window.cpp \
     algorithms/algorithm-controller.cpp \
-    algorithms/caesar-cipher.cpp
+    algorithms/caesar-cipher.cpp \
+    algorithms/vigenere-cipher.cpp
 
 HEADERS += \
         main-window.h \
     algorithms/encryption-algorithm.h \
     algorithms/algorithm-controller.h \
-    algorithms/caesar-cipher.h
+    algorithms/caesar-cipher.h \
+    algorithms/vigenere-cipher.h \
+    algorithms/vigenere-table.h

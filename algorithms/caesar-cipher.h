@@ -1,7 +1,6 @@
 #ifndef CAESER_H
 #define CAESER_H
 
-#include <QChar>
 #include <QString>
 
 #include "encryption-algorithm.h"
