@@ -19,7 +19,8 @@ Description  :
 -----------------------------------------------------------------------------*/
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      algorithmController()
+      algorithmController(),
+      inputRegEx("[A-Za-z\\s]+") // Note: Need to include two back slashes
 {
     setFixedSize(1200L, 675L);
     setMinimumSize(1200L, 675L);
@@ -63,9 +64,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Input/Output Tab
     inputWidget = new QWidget(centerWidget);
     inputLayout = new QVBoxLayout(inputWidget);
-    inputLabel = new QLabel("ASCII Plain Text", inputWidget);
+    inputLabel = new QLabel("ASCII Input", inputWidget);
     inputTextEdit = new QPlainTextEdit(inputWidget);
-    outputLabel = new QLabel("Ciphertext", inputWidget);
+    outputLabel = new QLabel("Output", inputWidget);
 
     outputTextEdit = new QPlainTextEdit(inputWidget);
     outputTextEdit->setReadOnly(true);
@@ -102,6 +103,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(encryptButton, &QAbstractButton::released, this, &MainWindow::encryptInput);
     connect(decryptButton, &QAbstractButton::released, this, &MainWindow::decryptInput);
+
+    connect(inputTextEdit, &QPlainTextEdit::textChanged, this, &MainWindow::validateInput);
 }
 
 /*-----------------------------------------------------------------------------
@@ -153,6 +156,24 @@ Description  :
 void MainWindow::decryptInput()
 {
     QString cipherText = inputTextEdit->toPlainText();
-    QString plainText = algorithmController.selectedAlgorithm().decrypt(plainText);
+    QString plainText = algorithmController.selectedAlgorithm().decrypt(cipherText);
     outputTextEdit->setPlainText(plainText);
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::validateInput()
+{
+    if (inputRegEx.exactMatch(inputTextEdit->toPlainText()))
+    {
+        decryptButton->setEnabled(true);
+        encryptButton->setEnabled(true);
+    }
+    else
+    {
+        decryptButton->setDisabled(true);
+        encryptButton->setDisabled(true);
+    }
 }

@@ -25,12 +25,14 @@ public:
 private slots:
     void encryptInput();
     void decryptInput();
+    void validateInput();
 
 private:
     void initializeActions();
     void initializeMenus();
 
     AlgorithmController algorithmController;
+    QRegExp inputRegEx;
 
     QMenu* fileMenu;
     QAction* saveAction;

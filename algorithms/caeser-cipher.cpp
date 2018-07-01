@@ -32,6 +32,7 @@ Description  :
 -----------------------------------------------------------------------------*/
 QString CaeserCipher::decrypt(const QString& cipherText)
 {
+
     QString plainText = "";
 
     for(const QChar& character : cipherText)
