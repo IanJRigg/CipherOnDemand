@@ -26,6 +26,7 @@ private slots:
     void encryptInput();
     void decryptInput();
     void validateInput();
+    void setCaesarRotation(int index);
 
 private:
     void initializeActions();
@@ -52,12 +53,13 @@ private:
     QPushButton* decryptButton;
     QPushButton* encryptButton;
 
-    QWidget* caeserTab;
-    QHBoxLayout* caeserTabLayout;
-    QLabel* caeserLabel;
-    QComboBox* caeserComboBox;
+    QWidget* caesarTab;
+    QHBoxLayout* caesarTabLayout;
+    QLabel* caesarLabel;
+    QComboBox* caesarComboBox;
 
     QWidget* vigenereTab;
+    QWidget* substitutionTab;
 
 };
 

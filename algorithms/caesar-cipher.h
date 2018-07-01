@@ -6,19 +6,23 @@
 
 #include "encryption-algorithm.h"
 
-class CaeserCipher : public EncryptionAlgorithm
+class CaesarCipher : public EncryptionAlgorithm
 {
 public:
-    explicit CaeserCipher(int rotation);
+    explicit CaesarCipher(unsigned int rotation = 0UL);
 
     QString encrypt(const QString& plainText) override;
     QString decrypt(const QString& cipherText) override;
 
+    void setRotation(unsigned int rotation);
+
 private:
+    void generateAlphabet(unsigned int rotation);
+
     QChar encryptCharacter(const QChar& character);
     QChar decryptCharacter(const QChar& character);
 
-    int rotationFactor;
+    char alphabet[26UL];
 };
 
 #endif // CAESER_H

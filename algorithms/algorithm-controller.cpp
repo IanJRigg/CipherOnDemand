@@ -6,7 +6,7 @@ Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
 AlgorithmController::AlgorithmController()
-    : caeserCipher(0)
+    : caesarCipher(0)
 {
 
 }
@@ -17,5 +17,14 @@ Description  :
 -----------------------------------------------------------------------------*/
 EncryptionAlgorithm& AlgorithmController::selectedAlgorithm()
 {
-    return caeserCipher;
+    return caesar();
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+CaesarCipher& AlgorithmController::caesar()
+{
+    return caesarCipher;
 }

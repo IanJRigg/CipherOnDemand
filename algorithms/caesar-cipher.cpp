@@ -1,20 +1,21 @@
-#include "caeser-cipher.h"
+#include "caesar-cipher.h"
+
+#include <QDebug>
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-CaeserCipher::CaeserCipher(int rotation) :
-    rotationFactor(rotation)
+CaesarCipher::CaesarCipher(unsigned int rotation)
 {
-
+    generateAlphabet(rotation);
 }
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QString CaeserCipher::encrypt(const QString& plainText)
+QString CaesarCipher::encrypt(const QString& plainText)
 {
     QString cipherText = "";
 
@@ -30,9 +31,8 @@ QString CaeserCipher::encrypt(const QString& plainText)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QString CaeserCipher::decrypt(const QString& cipherText)
+QString CaesarCipher::decrypt(const QString& cipherText)
 {
-
     QString plainText = "";
 
     for(const QChar& character : cipherText)
@@ -47,16 +47,46 @@ QString CaeserCipher::decrypt(const QString& cipherText)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QChar CaeserCipher::encryptCharacter(const QChar& character)
+void CaesarCipher::setRotation(unsigned int rotation)
 {
-    return QChar('a');
+    generateAlphabet(rotation);
 }
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QChar CaeserCipher::decryptCharacter(const QChar& character)
+void CaesarCipher::generateAlphabet(unsigned int rotation)
 {
-    return QChar('a');
+    char tracker = 'a' + rotation;
+    for(unsigned int i = 0UL; i < 26UL; ++i)
+    {
+        if (tracker > 'z')
+        {
+            tracker = 'a';
+        }
+
+        alphabet[i] = tracker++;
+        qDebug() << alphabet[i] << " ";
+    }
+
+    qDebug() << "";
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+QChar CaesarCipher::encryptCharacter(const QChar& character)
+{
+    return QChar(character);
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+QChar CaesarCipher::decryptCharacter(const QChar& character)
+{
+    return QChar(character);
 }

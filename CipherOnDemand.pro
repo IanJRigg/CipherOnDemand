@@ -29,10 +29,10 @@ SOURCES += \
         main.cpp \
         main-window.cpp \
     algorithms/algorithm-controller.cpp \
-    algorithms/caeser-cipher.cpp
+    algorithms/caesar-cipher.cpp
 
 HEADERS += \
         main-window.h \
     algorithms/encryption-algorithm.h \
     algorithms/algorithm-controller.h \
-    algorithms/caeser-cipher.h
+    algorithms/caesar-cipher.h

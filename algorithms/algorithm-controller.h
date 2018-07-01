@@ -1,7 +1,7 @@
 #ifndef ALGORITHMCONTROLLER_H
 #define ALGORITHMCONTROLLER_H
 
-#include "caeser-cipher.h"
+#include "caesar-cipher.h"
 
 class AlgorithmController
 {
@@ -10,8 +10,10 @@ public:
 
     EncryptionAlgorithm& selectedAlgorithm();
 
+    CaesarCipher& caesar();
+
 private:
-    CaeserCipher caeserCipher;
+    CaesarCipher caesarCipher;
 };
 
 #endif // ALGORITHMCONTROLLER_H

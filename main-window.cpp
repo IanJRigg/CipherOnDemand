@@ -13,6 +13,8 @@
 
 #include "algorithms/algorithm-controller.h"
 
+#include <QDebug>
+
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
@@ -35,31 +37,32 @@ MainWindow::MainWindow(QWidget *parent)
     // Algorithm Tab
     algorithmTabs = new QTabWidget(centerWidget);
 
-    // caeser Tab
-    caeserTab = new QWidget(algorithmTabs);
-    caeserTabLayout = new QHBoxLayout(caeserTab);
-    caeserLabel = new QLabel("Rotation Factor: ", caeserTab);
-    caeserComboBox = new QComboBox(caeserTab);
-    caeserComboBox->addItems({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+    // Caeser Tab
+    caesarTab = new QWidget(algorithmTabs);
+    caesarTabLayout = new QHBoxLayout(caesarTab);
+    caesarLabel = new QLabel("Rotation Factor: ", caesarTab);
+    caesarComboBox = new QComboBox(caesarTab);
+    caesarComboBox->addItems({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
                                "11", "12", "13", "14", "15", "16", "17", "18",
                                "19", "20", "21", "22", "23", "24", "25", "26"});
+    caesarComboBox->setCurrentIndex(0L);
+    setCaesarRotation(0L);
 
-    caeserTabLayout->addWidget(caeserLabel);
-    caeserTabLayout->addWidget(caeserComboBox);
+    caesarTabLayout->addWidget(caesarLabel);
+    caesarTabLayout->addWidget(caesarComboBox);
 
-    caeserTab->setLayout(caeserTabLayout);
+    caesarTab->setLayout(caesarTabLayout);
 
-
-    // Caeser Tab
-    caeserTab = new QWidget(algorithmTabs);
+    // Vigenere Tab
     vigenereTab = new QWidget(algorithmTabs);
 
+    // Substitution Tab
+    substitutionTab = new QWidget(algorithmTabs);
+
     // Add tabs
-    algorithmTabs->addTab(caeserTab, "Caeser");
+    algorithmTabs->addTab(caesarTab, "Caeser");
     algorithmTabs->addTab(vigenereTab, "Vigenère");
-
-
-
+    algorithmTabs->addTab(substitutionTab, "Substitution");
 
     // Input/Output Tab
     inputWidget = new QWidget(centerWidget);
@@ -80,9 +83,6 @@ MainWindow::MainWindow(QWidget *parent)
     buttonLayout->addWidget(encryptButton);
 
     buttonWidget->setLayout(buttonLayout);
-
-
-
 
     // Add to the vertical layout of the I/O Tab
     inputLayout->addWidget(inputLabel);
@@ -105,6 +105,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(decryptButton, &QAbstractButton::released, this, &MainWindow::decryptInput);
 
     connect(inputTextEdit, &QPlainTextEdit::textChanged, this, &MainWindow::validateInput);
+    connect(caesarComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(setCaesarRotation(int)));
 }
 
 /*-----------------------------------------------------------------------------
@@ -176,4 +178,14 @@ void MainWindow::validateInput()
         decryptButton->setDisabled(true);
         encryptButton->setDisabled(true);
     }
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::setCaesarRotation(int index)
+{
+    // Index is zero based,
+    algorithmController.caesar().setRotation(index + 1);
 }
