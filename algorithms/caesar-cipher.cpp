@@ -1,4 +1,5 @@
 #include "caesar-cipher.h"
+#include "algorithms-common.h"
 
 #include <QDebug>
 
@@ -21,8 +22,10 @@ QString CaesarCipher::encrypt(const QString& plainText)
 
     for(const QChar& character : plainText)
     {
-        cipherText.append(encryptCharacter(character.toLatin1()));
+        cipherText.append(encrypt(character.toLatin1()));
     }
+
+    qDebug() << plainText;
 
     return cipherText;
 }
@@ -37,7 +40,7 @@ QString CaesarCipher::decrypt(const QString& cipherText)
 
     for(const QChar& character : cipherText)
     {
-        plainText.append(decryptCharacter(character.toLatin1()));
+        plainText.append(decrypt(character.toLatin1()));
     }
 
     return plainText;
@@ -77,17 +80,13 @@ void CaesarCipher::generateAlphabet(unsigned int rotation)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-char CaesarCipher::encryptCharacter(const char character)
+char CaesarCipher::encrypt(const char character)
 {
     char result = character;
 
-    if (character <= 'z' && character >= 'a')
+    if (charIsAlpha(character))
     {
-        result = alphabet[character - 'a'];
-    }
-    else if (character <= 'Z' && character >= 'A')
-    {
-        result = alphabet[character - 'A'] - 32UL;
+        result = alphabet[charToAlphaIndex(character)];
     }
 
     return result;
@@ -97,27 +96,29 @@ char CaesarCipher::encryptCharacter(const char character)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-char CaesarCipher::decryptCharacter(const char character)
+char CaesarCipher::decrypt(const char character)
 {
     char result = character;
 
-    if (character <= 'z' && character >= 'a')
+    if (charIsLowerCase(character))
     {
         for(int i = 0L; i < 26L; ++i)
         {
             if (alphabet[i] == character)
             {
                 result = 'a' + i;
+                 break;
             }
         }
     }
-    else if (character <= 'Z' && character >= 'A')
+    else if (charIsUpperCase(character))
     {
         for(int i = 0L; i < 26L; ++i)
         {
             if (alphabet[i] == character + 32UL)
             {
                 result = 'A' + i;
+                break;
             }
         }
     }

@@ -10,8 +10,10 @@
 #include <QPlainTextEdit>
 #include <QLabel>
 #include <QComboBox>
+#include <QLineEdit>
 
 #include "algorithms/algorithm-controller.h"
+#include "window/window-common.h"
 
 #include <QDebug>
 
@@ -21,8 +23,7 @@ Description  :
 -----------------------------------------------------------------------------*/
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      algorithmController(),
-      inputRegEx("[A-Za-z\\s]+") // Note: Need to include two back slashes
+      algorithmController()
 {
     setFixedSize(1200L, 675L);
     setMinimumSize(1200L, 675L);
@@ -40,11 +41,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Caeser Tab
     caesarTab = new QWidget(algorithmTabs);
     caesarTabLayout = new QHBoxLayout(caesarTab);
-    caesarLabel = new QLabel("Rotation Factor: ", caesarTab);
+    caesarLabel = new QLabel(CAESER_LABLE_TEXT, caesarTab);
     caesarComboBox = new QComboBox(caesarTab);
-    caesarComboBox->addItems({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                               "11", "12", "13", "14", "15", "16", "17", "18",
-                               "19", "20", "21", "22", "23", "24", "25", "26"});
+    caesarComboBox->addItems(CAESAR_SHIFTS);
     caesarComboBox->setCurrentIndex(0L);
     setCaesarRotation(0L);
 
@@ -55,14 +54,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Vigenere Tab
     vigenereTab = new QWidget(algorithmTabs);
+    vigenereTabLayout = new QHBoxLayout(vigenereTab);
+    vigenereLabel = new QLabel("ASCII Key: ", vigenereTab);
+    vigenereLineEdit = new QLineEdit(vigenereTab);
+    vigenereLineEdit->setValidator(new QRegExpValidator(ASCII_ALPHA_LOWER_REGEX, vigenereTab));
 
-    // Substitution Tab
-    substitutionTab = new QWidget(algorithmTabs);
+    vigenereTabLayout->addWidget(vigenereLabel);
+    vigenereTabLayout->addWidget(vigenereLineEdit);
+
 
     // Add tabs
     algorithmTabs->addTab(caesarTab, "Caeser");
     algorithmTabs->addTab(vigenereTab, "Vigenère");
-    algorithmTabs->addTab(substitutionTab, "Substitution");
 
     // Input/Output Tab
     inputWidget = new QWidget(centerWidget);
@@ -168,7 +171,7 @@ Description  :
 -----------------------------------------------------------------------------*/
 void MainWindow::validateInput()
 {
-    if (inputRegEx.exactMatch(inputTextEdit->toPlainText()))
+    if (ASCII_ALPHA_WHITE_SPACE_REGEX.exactMatch(inputTextEdit->toPlainText()))
     {
         decryptButton->setEnabled(true);
         encryptButton->setEnabled(true);

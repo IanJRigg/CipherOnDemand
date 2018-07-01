@@ -13,6 +13,7 @@ class QVBoxLayout;
 class QLabel;
 class QPushButton;
 class QComboBox;
+class QLineEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -33,7 +34,6 @@ private:
     void initializeMenus();
 
     AlgorithmController algorithmController;
-    QRegExp inputRegEx;
 
     QMenu* fileMenu;
     QAction* saveAction;
@@ -59,8 +59,9 @@ private:
     QComboBox* caesarComboBox;
 
     QWidget* vigenereTab;
-    QWidget* substitutionTab;
-
+    QHBoxLayout* vigenereTabLayout;
+    QLabel* vigenereLabel;
+    QLineEdit* vigenereLineEdit;
 };
 
 #endif // MAIN-WINDOW_H

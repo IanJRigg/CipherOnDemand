@@ -1,6 +1,8 @@
 #include "vigenere-cipher.h"
 #include "vigenere-table.h"
 
+#include "algorithms-common.h"
+
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
@@ -15,21 +17,51 @@ VigenereCipher::VigenereCipher(const QString& key)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QString encrypt(const QString& plainText)
+QString VigenereCipher::encrypt(const QString& plainText)
 {
     QString cipherText = "";
 
-    return plainText;
+    int tracker = 0L;
+    const int max = plainText.size();
+
+    for(const QChar& character : plainText)
+    {
+        cipherText.append(encrypt(character.toLatin1(), key.at(tracker).toLatin1()));
+
+        if (tracker >= max)
+        {
+            tracker = 0L;
+        }
+
+        ++tracker;
+    }
+
+    return cipherText;
 }
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QString decrypt(const QString& cipherText)
+QString VigenereCipher::decrypt(const QString& cipherText)
 {
     QString plainText = "";
 
+    int tracker = 0L;
+    const int max = plainText.size();
+
+    for(const QChar& character : cipherText)
+    {
+        plainText.append(decrypt(character.toLatin1(), key.at(tracker).toLatin1()));
+
+        if (tracker >= max)
+        {
+            tracker = 0L;
+        }
+
+        ++tracker;
+    }
+
     return plainText;
 }
 
@@ -37,7 +69,7 @@ QString decrypt(const QString& cipherText)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-void setKey(const QString& key)
+void VigenereCipher::setKey(const QString& key)
 {
     this->key = key;
 }
@@ -46,16 +78,58 @@ void setKey(const QString& key)
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-char encryptCharacter(const char character)
+char VigenereCipher::encrypt(const char plainTextChar, const char keyChar)
 {
-    return character;
+    char result = plainTextChar;
+
+    if (charIsAlpha(plainTextChar) && charIsAlpha(keyChar))
+    {
+        unsigned int keyIndex = charToAlphaIndex(keyChar);
+        unsigned int plainTextIndex = charToAlphaIndex(plainTextChar);
+
+        if ((keyIndex < 26UL) && (plainTextIndex < 26UL))
+        {
+            result = VIGENERE_TABLE[keyIndex][plainTextIndex];
+        }
+    }
+
+    return result;
 }
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-char decryptCharacter(const char character)
+char VigenereCipher::decrypt(const char cipherTextChar, const char keyChar)
 {
-    return character;
+    char result = cipherTextChar;
+
+    if (charIsLowerCase(cipherTextChar))
+    {
+        unsigned int keyIndex = charToAlphaIndex(keyChar);
+
+        for(int i = 0L; i < 26L; ++i)
+        {
+            if (VIGENERE_TABLE[keyIndex][i] == cipherTextChar)
+            {
+                result = 'a' + i;
+                break;
+            }
+        }
+    }
+    else if (charIsUpperCase(cipherTextChar))
+    {
+        unsigned int keyIndex = charToAlphaIndex(keyChar);
+
+        for(int i = 0L; i < 26L; ++i)
+        {
+            if (VIGENERE_TABLE[keyIndex][i] == cipherTextChar)
+            {
+                result = 'A' + i;
+                break;
+            }
+        }
+    }
+
+    return result;
 }

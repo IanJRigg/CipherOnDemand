@@ -1,6 +1,8 @@
 #ifndef VIGENERECIPHER_H
 #define VIGENERECIPHER_H
 
+#include <QString>
+
 #include "encryption-algorithm.h"
 
 class VigenereCipher : public EncryptionAlgorithm
@@ -14,8 +16,8 @@ public:
     void setKey(const QString& key);
 
 private:
-    char encryptCharacter(const char character);
-    char decryptCharacter(const char character);
+    char encrypt(const char plainTextChar, const char keyChar);
+    char decrypt(const char cipherTextChar, const char keyChar);
 
     QString key;
 };

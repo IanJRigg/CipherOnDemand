@@ -18,8 +18,8 @@ public:
 private:
     void generateAlphabet(unsigned int rotation);
 
-    char encryptCharacter(const char character);
-    char decryptCharacter(const char character);
+    char encrypt(const char character);
+    char decrypt(const char character);
 
     char alphabet[26UL];
 };

@@ -38,4 +38,6 @@ HEADERS += \
     algorithms/algorithm-controller.h \
     algorithms/caesar-cipher.h \
     algorithms/vigenere-cipher.h \
-    algorithms/vigenere-table.h
+    algorithms/vigenere-table.h \
+    window/window-common.h \
+    algorithms/algorithms-common.h
