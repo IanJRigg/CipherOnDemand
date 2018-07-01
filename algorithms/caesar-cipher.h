@@ -19,8 +19,8 @@ public:
 private:
     void generateAlphabet(unsigned int rotation);
 
-    QChar encryptCharacter(const QChar& character);
-    QChar decryptCharacter(const QChar& character);
+    char encryptCharacter(const char character);
+    char decryptCharacter(const char character);
 
     char alphabet[26UL];
 };

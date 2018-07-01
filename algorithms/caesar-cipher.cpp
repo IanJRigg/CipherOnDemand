@@ -21,7 +21,7 @@ QString CaesarCipher::encrypt(const QString& plainText)
 
     for(const QChar& character : plainText)
     {
-        cipherText.append(encryptCharacter(character));
+        cipherText.append(encryptCharacter(character.toLatin1()));
     }
 
     return cipherText;
@@ -37,7 +37,7 @@ QString CaesarCipher::decrypt(const QString& cipherText)
 
     for(const QChar& character : cipherText)
     {
-        plainText.append(decryptCharacter(character));
+        plainText.append(decryptCharacter(character.toLatin1()));
     }
 
     return plainText;
@@ -49,7 +49,10 @@ Description  :
 -----------------------------------------------------------------------------*/
 void CaesarCipher::setRotation(unsigned int rotation)
 {
-    generateAlphabet(rotation);
+    if (rotation <= 26UL)
+    {
+        generateAlphabet(rotation);
+    }
 }
 
 /*-----------------------------------------------------------------------------
@@ -67,26 +70,57 @@ void CaesarCipher::generateAlphabet(unsigned int rotation)
         }
 
         alphabet[i] = tracker++;
-        qDebug() << alphabet[i] << " ";
+    }
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+char CaesarCipher::encryptCharacter(const char character)
+{
+    char result = character;
+
+    if (character <= 'z' && character >= 'a')
+    {
+        result = alphabet[character - 'a'];
+    }
+    else if (character <= 'Z' && character >= 'A')
+    {
+        result = alphabet[character - 'A'] - 32UL;
     }
 
-    qDebug() << "";
+    return result;
 }
 
 /*-----------------------------------------------------------------------------
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-QChar CaesarCipher::encryptCharacter(const QChar& character)
+char CaesarCipher::decryptCharacter(const char character)
 {
-    return QChar(character);
-}
+    char result = character;
 
-/*-----------------------------------------------------------------------------
-Return Value :
-Description  :
------------------------------------------------------------------------------*/
-QChar CaesarCipher::decryptCharacter(const QChar& character)
-{
-    return QChar(character);
+    if (character <= 'z' && character >= 'a')
+    {
+        for(int i = 0L; i < 26L; ++i)
+        {
+            if (alphabet[i] == character)
+            {
+                result = 'a' + i;
+            }
+        }
+    }
+    else if (character <= 'Z' && character >= 'A')
+    {
+        for(int i = 0L; i < 26L; ++i)
+        {
+            if (alphabet[i] == character + 32UL)
+            {
+                result = 'A' + i;
+            }
+        }
+    }
+
+    return result;
 }
