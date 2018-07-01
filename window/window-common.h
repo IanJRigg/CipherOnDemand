@@ -1,0 +1,4 @@
+#ifndef WINDOWCOMMON_H
+#define WINDOWCOMMON_H
+
+#endif // WINDOWCOMMON_H
