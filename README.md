@@ -7,7 +7,7 @@ CipherOnDemand is made without any QML, and is created entirely by the code itse
 The Encryption algorithms are controlled in a top level wrapper object that exposes polymorphic references to the objects which implement the encryption algorithms, and which reference is provided is determined by the currently active tab.
 
 ## TODO:
-1. Fix catastrophic failure when encrypting/decrypting a blank key.
+1. Add a test suite. Unit tests for the algorithms, and integration tests for the UI itself.
 2. Refactor the UI generation code to better represent the design as a tree.
 3. Refactor the Caesar cipher to use the vigenere table.
 4. Allow for users to enter a custom alphabet for the vigenere table. (Will definitely collide with number 3).
