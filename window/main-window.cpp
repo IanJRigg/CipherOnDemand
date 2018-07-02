@@ -161,6 +161,13 @@ void MainWindow::validateInput()
         decryptButton->setDisabled(true);
         encryptButton->setDisabled(true);
     }
+
+    // Backdoor until I can find a better way to handle this.
+    if ((algorithmTabs->currentIndex() == 1UL) && (vigenereLineEdit->text() == ""))
+    {
+        decryptButton->setDisabled(true);
+        encryptButton->setDisabled(true);
+    }
 }
 
 /*-----------------------------------------------------------------------------
