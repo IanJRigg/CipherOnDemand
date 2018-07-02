@@ -127,28 +127,6 @@ MainWindow::~MainWindow()
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
-void  MainWindow::initializeActions()
-{
-    exitAction = new QAction(tr("E&xit"), this);
-    exitAction->setShortcuts(QKeySequence::Quit);
-    exitAction->setStatusTip(tr("Exit the application"));
-    connect(exitAction, &QAction::triggered, this, &QWidget::close);
-}
-
-/*-----------------------------------------------------------------------------
-Return Value :
-Description  :
------------------------------------------------------------------------------*/
-void MainWindow::initializeMenus()
-{
-//    fileMenu = menuBar()->addMenu(tr("&File"));
-//    fileMenu->addAction(exitAction);
-}
-
-/*-----------------------------------------------------------------------------
-Return Value :
-Description  :
------------------------------------------------------------------------------*/
 void MainWindow::encryptInput()
 {
     QString plainText = inputTextEdit->toPlainText();
@@ -230,4 +208,51 @@ void MainWindow::changeAlgorithm(int index)
         algorithmController.setSelectedToVigenere();
     }
 
+    resetCaesarTab();
+    resetVigenereTab();
+
+    inputTextEdit->clear();
+    outputTextEdit->clear();
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::resetCaesarTab()
+{
+    caesarComboBox->setCurrentIndex(0L);
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::resetVigenereTab()
+{
+    vigenereLineEdit->setText("");
+
+    validateVigenereKey();
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::initializeActions()
+{
+    exitAction = new QAction(tr("E&xit"), this);
+    exitAction->setShortcuts(QKeySequence::Quit);
+    exitAction->setStatusTip(tr("Exit the application"));
+    connect(exitAction, &QAction::triggered, this, &QWidget::close);
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::initializeMenus()
+{
+//    fileMenu = menuBar()->addMenu(tr("&File"));
+//    fileMenu->addAction(exitAction);
 }

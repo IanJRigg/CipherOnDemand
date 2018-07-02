@@ -35,6 +35,9 @@ private:
     void initializeActions();
     void initializeMenus();
 
+    void resetCaesarTab();
+    void resetVigenereTab();
+
     AlgorithmController algorithmController;
 
     QMenu* fileMenu;
