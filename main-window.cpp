@@ -108,8 +108,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(decryptButton, &QAbstractButton::released, this, &MainWindow::decryptInput);
 
     connect(inputTextEdit, &QPlainTextEdit::textChanged, this, &MainWindow::validateInput);
-    connect(caesarComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(setCaesarRotation(int)));
+    connect(vigenereLineEdit, &QLineEdit::textChanged, this, &MainWindow::validateVigenereKey);
+    connect(caesarComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setCaesarRotation(int)));
+
+    connect(algorithmTabs, SIGNAL(currentChanged(int)), this, SLOT(changeAlgorithm(int)));
 }
 
 /*-----------------------------------------------------------------------------
@@ -187,8 +189,45 @@ void MainWindow::validateInput()
 Return Value :
 Description  :
 -----------------------------------------------------------------------------*/
+void MainWindow::validateVigenereKey()
+{
+    if (ASCII_ALPHA_LOWER_REGEX.exactMatch(vigenereLineEdit->text()))
+    {
+        decryptButton->setEnabled(true);
+        encryptButton->setEnabled(true);
+
+        algorithmController.vigenere().setKey(vigenereLineEdit->text());
+    }
+    else
+    {
+        decryptButton->setDisabled(true);
+        encryptButton->setDisabled(true);
+    }
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
 void MainWindow::setCaesarRotation(int index)
 {
     // Index is zero based,
     algorithmController.caesar().setRotation(index + 1);
+}
+
+/*-----------------------------------------------------------------------------
+Return Value :
+Description  :
+-----------------------------------------------------------------------------*/
+void MainWindow::changeAlgorithm(int index)
+{
+    if (index == 0L)
+    {
+        algorithmController.setSelectedToCaesar();
+    }
+    else if (index == 1L)
+    {
+        algorithmController.setSelectedToVigenere();
+    }
+
 }

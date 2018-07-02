@@ -27,7 +27,9 @@ private slots:
     void encryptInput();
     void decryptInput();
     void validateInput();
+    void validateVigenereKey();
     void setCaesarRotation(int index);
+    void changeAlgorithm(int index);
 
 private:
     void initializeActions();

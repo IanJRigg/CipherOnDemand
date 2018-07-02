@@ -26,9 +26,10 @@ QString VigenereCipher::encrypt(const QString& plainText)
 
     for(const QChar& character : plainText)
     {
+        qDebug() << "(Encrypt) Tracker is : " << tracker << ". For " << key;
         cipherText.append(encrypt(character.toLatin1(), key.at(tracker).toLatin1()));
 
-        if (tracker >= max)
+        if (tracker >= max - 1L)
         {
             tracker = 0L;
         }
@@ -48,13 +49,14 @@ QString VigenereCipher::decrypt(const QString& cipherText)
     QString plainText = "";
 
     int tracker = 0L;
-    const int max = plainText.size();
+    const int max = cipherText.size();
 
     for(const QChar& character : cipherText)
     {
+        qDebug() << "(Decrypt) Tracker is : " << tracker << ". For " << key;
         plainText.append(decrypt(character.toLatin1(), key.at(tracker).toLatin1()));
 
-        if (tracker >= max)
+        if (tracker >= max - 1L)
         {
             tracker = 0L;
         }
@@ -86,6 +88,8 @@ char VigenereCipher::encrypt(const char plainTextChar, const char keyChar)
     {
         unsigned int keyIndex = charToAlphaIndex(keyChar);
         unsigned int plainTextIndex = charToAlphaIndex(plainTextChar);
+
+        qDebug() << keyIndex << " " << plainTextIndex;
 
         if ((keyIndex < 26UL) && (plainTextIndex < 26UL))
         {
